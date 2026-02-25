@@ -3,23 +3,11 @@ package com.game.tiles;
 import com.game.utils.Motion;
 import javafx.scene.image.ImageView;
 
-
-// This abstract class is the superclass of all Tile based classes in the com.game.tiles package.
-// This class contains variables that control where tiles can move.
-
 public abstract class Tile {
 
-    // Created image variable to storage images for each tile class and for print on
-    // the game board.
     protected ImageView image;
-
-    // Created property variable to check types of tiles(Vertical,Horizontal...).
     protected String property;
-
-    // Created to storage whether the tiles could move.
     protected boolean canMove;
-
-    // These boolean variables created to determine which direction the objects will go.
     protected boolean isTopFree;
     protected boolean isBottomFree;
     protected boolean isRightFree;
@@ -30,36 +18,59 @@ public abstract class Tile {
         this.motion = new Motion();
     }
 
-    public boolean isMove() {
-        return canMove;
+    protected void configurePipe(String property, String straightPrefix, String curvedPrefix) {
+        this.property = property;
+        switch (property) {
+            case "Horizontal":
+                this.image = new ImageView("resources/images/" + straightPrefix + " Horizontal.jpeg");
+                this.isLeftFree = true;
+                this.isRightFree = true;
+                break;
+            case "Vertical":
+                this.image = new ImageView("resources/images/" + straightPrefix + " Vertical.jpeg");
+                this.isTopFree = true;
+                this.isBottomFree = true;
+                break;
+            case "00":
+                this.image = new ImageView("resources/images/" + curvedPrefix + " 00.jpeg");
+                this.isLeftFree = true;
+                this.isTopFree = true;
+                break;
+            case "01":
+                this.image = new ImageView("resources/images/" + curvedPrefix + " 01.jpeg");
+                this.isTopFree = true;
+                this.isRightFree = true;
+                break;
+            case "10":
+                this.image = new ImageView("resources/images/" + curvedPrefix + " 10.jpeg");
+                this.isLeftFree = true;
+                this.isBottomFree = true;
+                break;
+            case "11":
+                this.image = new ImageView("resources/images/" + curvedPrefix + " 11.jpeg");
+                this.isRightFree = true;
+                this.isBottomFree = true;
+                break;
+        }
     }
 
-    public ImageView getImage() {
-        return image;
+    protected void configureDirectional(String property, String prefix) {
+        this.property = property;
+        this.image = new ImageView("resources/images/" + prefix + " " + property + ".jpeg");
+        switch (property) {
+            case "HorizontalR": this.isRightFree = true; break;
+            case "HorizontalL": this.isLeftFree = true; break;
+            case "VerticalB":   this.isBottomFree = true; break;
+            case "VerticalT":   this.isTopFree = true; break;
+        }
     }
 
-    public String getProperty() {
-        return property;
-    }
-
-    public boolean isTopFree() {
-        return isTopFree;
-    }
-
-    public boolean isBottomFree() {
-        return isBottomFree;
-    }
-
-    public boolean isRightFree() {
-        return isRightFree;
-    }
-
-    public boolean isLeftFree() {
-        return isLeftFree;
-    }
-
-    public Motion getMotion() {
-        return motion;
-    }
-
+    public boolean isMove() { return canMove; }
+    public ImageView getImage() { return image; }
+    public String getProperty() { return property; }
+    public boolean isTopFree() { return isTopFree; }
+    public boolean isBottomFree() { return isBottomFree; }
+    public boolean isRightFree() { return isRightFree; }
+    public boolean isLeftFree() { return isLeftFree; }
+    public Motion getMotion() { return motion; }
 }
